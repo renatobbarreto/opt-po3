@@ -86,7 +86,7 @@ def fo(s):
     #composição salarial:
     for i in range(0, n):
         op[i][0] = (i*0,01)
-        op[0][i+1] = (sal_min*(0.5*i)) 
+        op[i][1] = (sal_min*(0.5*i)) 
     for j in range(0, 4):
     receita = #não entendi como ficaria aqui (?)
     custo = vendedor[s[0]][s[1]]*op[s[2]][0] + op[0][s[3]]
