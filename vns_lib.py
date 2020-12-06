@@ -39,7 +39,7 @@ def vns(s,r):
         k = 1
         while(k <= r):
             _s_ = BuscaLocal(_s, k)
-            if( fo(_s_, vendedor, op) < fo(_s, vendedor, op)):
+            if( fo(_s_, vendedor, op) > fo(_s, vendedor, op)):
                 _s = _s_
                 k = 1
                 y+=1
@@ -51,7 +51,7 @@ def vns(s,r):
                 v.append(fo(_s, vendedor, op))
                 print(y, "   ", _s, "Z =", fo(_s, vendedor, op))
         i+=1
-    plt.plot(list(range(1, len(v)+1)), v, 'b-', label = "Custo")
+    plt.plot(list(range(1, len(v)+1)), v, 'b-', label = "Lucro")
     plt.title("VNS")
     plt.legend()
     plt.xlabel("Iterações")
