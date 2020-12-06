@@ -20,21 +20,22 @@ def vns(s,r):
     n = 10
     vendedor = []
     op = []
-    vendedor.append(np.linspace(23116, 48544, 1000)) 
-    vendedor.append(np.linspace(20000, 40000, 1000))
-    a = []
+    vendedor.append(np.linspace(23116, 48544, 20)) 
+    vendedor.append(np.linspace(20000, 40000, 20))
     #composição salarial:
     for i in range(0, n):
+        a = []
         a.append((i+1)*0.01)
-        a.append(sal_min*(0.5*(i+1)))
+        a.append(sal_min*((i+1)))
         op.append(a)
-
+    print(op)
+    print(vendedor)
     v = []
     print(0, "   ", s, "Z =", fo(s, vendedor, op))
     _s = s.copy()
     y = 0
     i = 0
-    while (i < 50):#criterio de parada
+    while (i < 200):#criterio de parada
         k = 1
         while(k <= r):
             _s_ = BuscaLocal(_s, k)
@@ -56,6 +57,7 @@ def vns(s,r):
     plt.xlabel("Iterações")
     plt.ylabel("Vendas")
     plt.show()
+    print (vendedor[_s[0]][_s[1]], op[_s[2]][0], op[_s[3]][1]/1045.00)
     return _s 
 
 def BuscaLocal(s, k):
@@ -73,10 +75,14 @@ def BuscaLocal(s, k):
     """
     dif = s.copy()
     if(k < 2):
-        i = random.randint(0,2)
-        aux = dif[i]
-        dif[i] = dif[i+1]
-        dif[i+1] = aux
+        if(dif[0]==0): dif[0] = 1
+        else: dif[0] = 0
+        i = random.randint(0,19)
+        dif[1] = i
+        j = random.randint(0,9)
+        z = random.randint(0,1)
+        dif[2] = j
+        dif[3] = z
     else:
         i = random.randint(0,3)
         j = random.randint(0,3)
@@ -87,9 +93,9 @@ def BuscaLocal(s, k):
 
 ### codificação: VETOR DE 4 POSIÇÕES -> Primeira posição (0,1) representa o vendedor; Segunda posição representa
 ### qual valor da venda entre o linspace melhor favorece em len(vendedor[0] ou vendedor[1]); Terceira posição representa
-### qual melhor porcentagem favorece a função (0, n); Quarta posição representa qual melhor salário fixo representa (0, n)
+### qual melhor porcentagem favorece a função (0, n); Quarta posição representa qual melhor salário fixo representa (0, 1)
 def fo(s, vendedor, op): 
     for j in range(0, 4):
         receita = vendedor[s[0]][s[1]]
-        custo = vendedor[s[0]][s[1]]*op[s[2]][0] + op[0][s[3]]
-    return (receita - custo)
+        custo = ((vendedor[s[0]][s[1]]*op[s[2]][0]) + op[s[3]][1])
+    return (receita-custo)
