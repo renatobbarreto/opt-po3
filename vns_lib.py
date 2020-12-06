@@ -16,8 +16,21 @@ def vns(s,r):
         _s => vetor com a sequência ótima para o problema de minimização, além
         de mostrar em tela a evolução do algoritmo e um gráfico com os resultados.
     """
-    fo = []
-    print(0, "   ", s, "Z =", f(s))
+    sal_min = 1045.00
+    n = 10
+    vendedor = []
+    op = []
+    vendedor.append(np.linspace(23116, 48544, 1000)) 
+    vendedor.append(np.linspace(20000, 40000, 1000))
+    a = []
+    #composição salarial:
+    for i in range(0, n):
+        a.append((i+1)*0.01)
+        a.append(sal_min*(0.5*(i+1)))
+        op.append(a)
+
+    v = []
+    print(0, "   ", s, "Z =", fo(s, vendedor, op))
     _s = s.copy()
     y = 0
     i = 0
@@ -25,19 +38,19 @@ def vns(s,r):
         k = 1
         while(k <= r):
             _s_ = BuscaLocal(_s, k)
-            if( f(_s_) < f(_s)):
+            if( fo(_s_, vendedor, op) < fo(_s, vendedor, op)):
                 _s = _s_
                 k = 1
                 y+=1
-                fo.append(f(_s))
-                print(y, "   ", _s, "Z =", f(_s))
+                v.append(fo(_s, vendedor, op))
+                print(y, "   ", _s, "Z =", fo(_s, vendedor, op))
             else:
                 k+=1
                 y+=1
-                fo.append(f(_s))
-                print(y, "   ", _s, "Z =", f(_s))
+                v.append(fo(_s, vendedor, op))
+                print(y, "   ", _s, "Z =", fo(_s, vendedor, op))
         i+=1
-    plt.plot(list(range(1, len(fo)+1)), fo, 'b-', label = "Custo")
+    plt.plot(list(range(1, len(v)+1)), v, 'b-', label = "Custo")
     plt.title("VNS")
     plt.legend()
     plt.xlabel("Iterações")
@@ -60,13 +73,13 @@ def BuscaLocal(s, k):
     """
     dif = s.copy()
     if(k < 2):
-        i = random.randint(0,3)
+        i = random.randint(0,2)
         aux = dif[i]
         dif[i] = dif[i+1]
         dif[i+1] = aux
     else:
-        i = random.randint(0,4)
-        j = random.randint(0,4)
+        i = random.randint(0,3)
+        j = random.randint(0,3)
         aux = dif[i]
         dif[i] = dif[j]
         dif[j] = aux
@@ -75,19 +88,8 @@ def BuscaLocal(s, k):
 ### codificação: VETOR DE 4 POSIÇÕES -> Primeira posição (0,1) representa o vendedor; Segunda posição representa
 ### qual valor da venda entre o linspace melhor favorece em len(vendedor[0] ou vendedor[1]); Terceira posição representa
 ### qual melhor porcentagem favorece a função (0, n); Quarta posição representa qual melhor salário fixo representa (0, n)
-def fo(s):
-    sal_min = 1045.00
-    n = #?
-    vendedor = []
-    op = list()
-    vendedor[0] = np.linspace(23116, 48544, 1000) 
-    vendedor[1] = np.linspace(20000, 40000, 1000)
-    
-    #composição salarial:
-    for i in range(0, n):
-        op[i][0] = (i*0,01)
-        op[i][1] = (sal_min*(0.5*i)) 
+def fo(s, vendedor, op): 
     for j in range(0, 4):
-    receita = #não entendi como ficaria aqui (?)
-    custo = vendedor[s[0]][s[1]]*op[s[2]][0] + op[0][s[3]]
+        receita = vendedor[s[0]][s[1]]
+        custo = vendedor[s[0]][s[1]]*op[s[2]][0] + op[0][s[3]]
     return (receita - custo)
